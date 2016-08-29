@@ -5,7 +5,7 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 
 
-class Game(App):
+class Katurigja(App):
     view = BoxLayout()
 
     def build(self):
@@ -13,8 +13,8 @@ class Game(App):
 
 
 if __name__ == '__main__':
-    from controllers.world import World
+    from controllers.game import Game
 
-    game = Game()
-    game.view.add_widget(World())
+    game = Katurigja()
+    game.view.add_widget(Game())
     game.run()
