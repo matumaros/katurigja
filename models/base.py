@@ -1,9 +1,9 @@
 
 
 from peewee import Model
+from playhouse.sqlite_ext import SqliteExtDatabase
 
 
 class Base(Model):
-    def __init__(self, db, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._meta.database = db
+    class Meta:
+        database = SqliteExtDatabase(None)
