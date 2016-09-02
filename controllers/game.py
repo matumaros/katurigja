@@ -1,23 +1,32 @@
 
 
+from importlib import import_module
+
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
+import yaml
 
-from controllers.server import Server
 from controllers.world import World
 
 
 class Game(FloatLayout):
     Builder.load_file('views/game.kv')
 
-    def __init__(self, server=None, *args, **kwargs):
+    def __init__(self, client, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.client = client
 
-        if not server:
-            self.server = Server()
-        else:
-            self.server = server
-        self.player = self.server.create_ruler(name='Matumaros', age=23)
+        self.client.on_character_knowledge_update = \
+            self.update_player_knowledge
+
+        self.client.run()
 
     def move_character(self, event):
-        self.server.update_character(self.player)
+        self.client.update_character(self.player)
+
+    def update_player_knowledge(self, knowledge):
+        pass
+
+    def update_player_memory(self):
+        """what the player used to know, but isn't sure of now"""
+        pass
