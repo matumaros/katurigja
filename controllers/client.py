@@ -25,7 +25,7 @@ class Local(EventDispatcher):
         self.server.running = True
         while self.server.running:
             self.server.tick()
-            know = self.server.update_character_knowledge(self.character.id)
+            know = self.server.update_character_knowledge(self.character.uuid)
             self.on_character_knowledge_update(know)
 
     def pause(self):
