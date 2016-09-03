@@ -16,8 +16,9 @@ class Game(FloatLayout):
         super().__init__(*args, **kwargs)
         self.client = client
 
-        self.client.on_character_knowledge_update = \
-            self.update_player_knowledge
+        self.client.bind(
+            on_character_knowledge_update=self.update_player_knowledge
+        )
 
         self.client.run()
 
@@ -25,8 +26,4 @@ class Game(FloatLayout):
         self.client.update_character(self.player)
 
     def update_player_knowledge(self, knowledge):
-        pass
-
-    def update_player_memory(self):
-        """what the player used to know, but isn't sure of now"""
         pass
