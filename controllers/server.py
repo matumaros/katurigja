@@ -46,8 +46,8 @@ class Server:
         pass
 
     # - Data - #
-    def create_character(self, name, age=0, ai=True):
-        character = Character(db=self.db, name, age, ai)
+    def create_character(self, name, age=0, x=0, y=0, ai=True):
+        character = Character(db=self.db, name, age, x, y, ai)
         character.save()
         return character
 
