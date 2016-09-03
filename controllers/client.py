@@ -3,14 +3,19 @@
 import random
 import string
 
+from kivy.event import EventDispatcher
 from playhouse.sqlite_ext import SqliteExtDatabase
 
 from util.threads import thread
 from controllers.server import Server
 
 
-class Local:
+class Local(EventDispatcher):
     def __init__(self, settings={}):
+        self.register_event_type('on_character_knowledge_update')
+
+        super().__init__()
+
         self.server = Server(settings)
         self.db = SqliteExtDatabase('saves/serversession.save')
         self.character = self.create_random_character(ai=False)
