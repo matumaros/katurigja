@@ -36,10 +36,6 @@ class Server:
 
         self.update_metadata(**settings)
 
-    def __del__(self):
-        print('database closed')
-        self.db.close()
-
     # - Serving - #
     @thread
     def host(self):
@@ -59,7 +55,7 @@ class Server:
         pass
 
     def pause(self):
-        running = False
+        self.running = False
 
     # - Metadata - #
     def update_metadata(self, **settings):

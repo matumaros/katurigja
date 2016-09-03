@@ -9,6 +9,7 @@ game = Katurigja()
 client = Local({
     'map_name': 'flat_grassland'
 })
+game.bind(on_stop=lambda *args, **kwargs: client.pause())
 
 game.view.add_widget(Game(client))
 game.run()
