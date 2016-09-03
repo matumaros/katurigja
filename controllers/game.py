@@ -1,10 +1,7 @@
 
 
-from importlib import import_module
-
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
-import yaml
 
 from controllers.world import World
 
@@ -26,4 +23,4 @@ class Game(FloatLayout):
         self.client.update_character(self.player)
 
     def update_player_knowledge(self, knowledge):
-        pass
+        print(knowledge)

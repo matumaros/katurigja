@@ -40,7 +40,7 @@ class Local(EventDispatcher):
         self.server.update_metadata(**settings)
 
     # - Util - #
-    def create_random_character(self, name, age, ai=True):
+    def create_random_character(self, name='', age=0, ai=True):
         name = name or ''.join([
             random.choice(string.ascii_lowercase)
             for i in range(random.randint(2, 15))

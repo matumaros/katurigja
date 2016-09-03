@@ -13,7 +13,7 @@ class PreMade:
 
 class PreGenerated(PreMade):
     def __init__(self):
-        super().__init__(self, map_path='maps/last_generated.map'):
+        super().__init__(self, map_path='maps/last_generated.map')
         tiles = self.build()
         with Using(self._db, [Tile]):
             for tile in tiles:

@@ -1,8 +1,11 @@
 
 
+from importlib import import_module
+
 from peewee import Using
 from playhouse.sqlite_ext import SqliteExtDatabase
 from playhouse.shortcuts import model_to_dict
+import yaml
 
 from util.threads import thread
 from models.character import Character
@@ -15,7 +18,8 @@ class Server:
 
         with open('maps/index', 'r') as f:
             maps = yaml.load(f.read())
-        module = import_module(map_name)
+        map_name = settings['map_name']
+        module = import_module('maps.' + map_name)
         gmap = maps[map_name]
         self._map = getattr(module, gmap)
         running = False
@@ -45,13 +49,13 @@ class Server:
         running = False
 
     # - Metadata - #
-    def update_metadata(**settings):
+    def update_metadata(self, **settings):
         pass
 
     # - Data - #
     def create_character(self, name, age=0, x=0, y=0, ai=True):
         with Using(self.db, [Character]):
-            character = Character(db=self.db, name, age, x, y, ai)
+            character = Character(name, age, x, y, ai)
             character.save()
         return character
 
