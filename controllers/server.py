@@ -61,10 +61,18 @@ class Server:
             character = Character.get(id=character_id)
             for i in range(-10, 11):
                 for j in range(-10, 11):
-                    tile = Tile.get(x=i, y=j, character_id=character_id)
+                    i += character.x
+                    j += character.y
+
+                    tile = Tile.get(x=i, y=j, character_id=None)
                     if not tile:
                         tile = self._map.get(i, j)
+                        new_fact = Tile(**tile)
+                        new_fact.save()
                     else:
                         tile = model_to_dict(tile)
+                    tile.update({'character_id': character_id})
+                    new_knowledge = Tile(**tile)
+                    new_knowledge.save()
                     know[(i, j)] = tile
         return know
