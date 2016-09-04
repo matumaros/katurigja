@@ -35,6 +35,9 @@ class Server:
         gmap = maps[map_name]
         self._map = getattr(module, gmap)()
 
+        self.characters = {}
+        self.tiles = {}
+
         self.update_metadata(**settings)
 
     # - Serving - #
@@ -64,44 +67,30 @@ class Server:
 
     # - Data - #
     def create_character(self, name, age=0, x=0, y=0, ai=True):
-        with Using(self.db, [Character]):
-            character = Character(
-                uuid=uuid.uuid4(), name=name, age=age, x=x, y=y, ai=ai,
-            )
-            character.save()
+        cid = uuid.uuid4()
+        character = {
+            'info': {
+                'id': cid, 'name': name, 'age': age, 'x': x, 'y': y, 'ai': ai,
+            },
+            'characters': {},
+            'tiles': {},
+        }
+        self.characters[cid] = character
         return character
 
     def update_character_knowledge(self, character_id):
         know = {}
-        start = time()
-        with Using(self.db, [Character, Tile]):
-            character = Character.get(uuid=character_id)
-            for i in range(-5, 6):
-                for j in range(-5, 6):
-                    i += character.x
-                    j += character.y
+        character = self.characters[character_id]
+        for i in range(-5, 6):
+            for j in range(-5, 6):
+                i += character['info']['x']
+                j += character['info']['y']
 
-                    try:
-                        fact = Tile.get(x=i, y=j, character_uuid='')
-                    except Tile.DoesNotExist:
-                        fact = self._map.get(i, j)
-                        new_fact = Tile(uuid=uuid.uuid4(), **fact)
-                        new_fact.save()
-                    else:
-                        fact = model_to_dict(fact)
+                fact = self.tiles.get((i, j))
+                if not fact:
+                    fact = self._map.get(i, j)
+                    self.tiles[(i, j)] = fact
 
-                    try:
-                        knowledge = Tile.get(
-                            x=i, y=j, character_uuid=character_id,
-                        )
-                    except Tile.DoesNotExist:
-                        fact.update({
-                            'uuid': uuid.uuid4(),
-                            'character_id': character_id,
-                        })
-                        knowledge = Tile(**fact)
-                        
-                    knowledge.save()
-                    know[(i, j)] = knowledge
-        print('update_character_knowledge time:', time()-start)
+                self.characters[character_id]['tiles'][(i, j)] = fact
+                know = fact
         return know
