@@ -73,6 +73,7 @@ class Server:
                     fact = self._map.get(i, j)
                     self.tiles[(i, j)] = fact
 
-                self.characters[character_id].tiles[(i, j)] = fact
-                know[(i, j)] = fact
+                if (i, j) not in self.characters[character_id].tiles:
+                    self.characters[character_id].tiles[(i, j)] = fact
+                    know[(i, j)] = fact
         return know
