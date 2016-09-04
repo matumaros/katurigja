@@ -22,5 +22,5 @@ class Game(FloatLayout):
     def move_character(self, event):
         self.client.update_character(self.player)
 
-    def update_player_knowledge(self, knowledge):
+    def update_player_knowledge(self, ev, knowledge):
         print(knowledge)

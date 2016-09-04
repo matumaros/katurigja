@@ -74,5 +74,5 @@ class Server:
                     self.tiles[(i, j)] = fact
 
                 self.characters[character_id].tiles[(i, j)] = fact
-                know = fact
+                know[(i, j)] = fact
         return know

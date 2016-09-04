@@ -12,7 +12,6 @@ from controllers.server import Server
 class Local(EventDispatcher):
     def __init__(self, settings={}):
         self.register_event_type('on_character_knowledge_update')
-
         super().__init__()
 
         self.server = Server(settings)
@@ -26,10 +25,13 @@ class Local(EventDispatcher):
             know = self.server.update_character_knowledge(
                 self.character.id
             )
-            self.on_character_knowledge_update(know)
+            self.update_character_knowledge(know)
 
     def pause(self):
         self.server.pause()
+
+    def update_character_knowledge(self, know):
+        self.dispatch('on_character_knowledge_update', know)
 
     # - Events - #
     def on_character_knowledge_update(self, know):
