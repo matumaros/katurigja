@@ -5,6 +5,8 @@ import os
 from importlib import import_module
 import uuid
 
+from kivy.clock import Clock
+from kivy.event import EventDispatcher
 import yaml
 
 from util.threads import thread
@@ -12,9 +14,13 @@ from models.character import Character
 from models.tile import Tile
 
 
-class Server:
+class Server(EventDispatcher):
     def __init__(self, settings={}):
-        running = False
+        self.register_event_type('on_tick')
+        super().__init__()
+
+        self.running = False
+        self.tps = 1
 
         with open('maps/index', 'r') as f:
             maps = yaml.load(f.read())
@@ -37,17 +43,25 @@ class Server:
         pass
 
     # - Game Logic - #
-    @thread
     def run(self):
-        running = True
-        while running:
-            self.tick()
+        self.running = True
+        self._run()
 
+    def _run(self):
+        self.tick()
+        if self.running:
+            Clock.schedule_once(lambda dt: self._run(), 1/self.tps)
+
+    @thread
     def tick(self):
-        pass
+        self.dispatch('on_tick')
 
     def pause(self):
         self.running = False
+
+    # - Default Events - #
+    def on_tick(self):
+        return
 
     # - Metadata - #
     def update_metadata(self, **settings):

@@ -17,15 +17,17 @@ class Local(EventDispatcher):
         self.server = Server(settings)
         self.character = self.create_random_character(ai=False)
 
+        self.server.bind(on_tick=self.on_tick)
+
     @thread
     def run(self):
-        self.server.running = True
-        while self.server.running:
-            self.server.tick()
-            know = self.server.update_character_knowledge(
-                self.character.id
-            )
-            self.update_character_knowledge(know)
+        self.server.run()
+
+    def on_tick(self, *args):
+        know = self.server.update_character_knowledge(
+            self.character.id
+        )
+        self.update_character_knowledge(know)
 
     def pause(self):
         self.server.pause()
@@ -33,7 +35,7 @@ class Local(EventDispatcher):
     def update_character_knowledge(self, know):
         self.dispatch('on_character_knowledge_update', know)
 
-    # - Events - #
+    # - Default Events - #
     def on_character_knowledge_update(self, know):
         return
 
