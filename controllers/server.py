@@ -1,5 +1,6 @@
 
 
+from time import time
 import os
 from importlib import import_module
 import uuid
@@ -72,26 +73,35 @@ class Server:
 
     def update_character_knowledge(self, character_id):
         know = {}
+        start = time()
         with Using(self.db, [Character, Tile]):
             character = Character.get(uuid=character_id)
-            for i in range(-10, 11):
-                for j in range(-10, 11):
+            for i in range(-5, 6):
+                for j in range(-5, 6):
                     i += character.x
                     j += character.y
 
                     try:
-                        tile = Tile.get(x=i, y=j, character_uuid='')
+                        fact = Tile.get(x=i, y=j, character_uuid='')
                     except Tile.DoesNotExist:
-                        tile = self._map.get(i, j)
-                        new_fact = Tile(uuid=uuid.uuid4(), **tile)
+                        fact = self._map.get(i, j)
+                        new_fact = Tile(uuid=uuid.uuid4(), **fact)
                         new_fact.save()
                     else:
-                        tile = model_to_dict(tile)
-                    tile.update({
-                        'uuid': uuid.uuid4(),
-                        'character_id': character_id,
-                    })
-                    new_knowledge = Tile(**tile)
-                    new_knowledge.save()
-                    know[(i, j)] = tile
+                        fact = model_to_dict(fact)
+
+                    try:
+                        knowledge = Tile.get(
+                            x=i, y=j, character_uuid=character_id,
+                        )
+                    except Tile.DoesNotExist:
+                        fact.update({
+                            'uuid': uuid.uuid4(),
+                            'character_id': character_id,
+                        })
+                        knowledge = Tile(**fact)
+                        
+                    knowledge.save()
+                    know[(i, j)] = knowledge
+        print('update_character_knowledge time:', time()-start)
         return know
