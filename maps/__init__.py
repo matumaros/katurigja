@@ -1,14 +1,13 @@
 
 
 from peewee import Using
-from playhouse.sqlite_ext import SqliteExtDatabase
 
 from models.tile import Tile
 
 
 class PreMade:
     def __init__(self, map_path):
-        self._db = SqliteExtDatabase(map_path)
+        pass # load maps
 
 
 class PreGenerated(PreMade):

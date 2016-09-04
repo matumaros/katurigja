@@ -4,7 +4,6 @@ import random
 import string
 
 from kivy.event import EventDispatcher
-from playhouse.sqlite_ext import SqliteExtDatabase
 
 from util.threads import thread
 from controllers.server import Server
@@ -17,7 +16,6 @@ class Local(EventDispatcher):
         super().__init__()
 
         self.server = Server(settings)
-        self.db = SqliteExtDatabase('saves/serversession.save')
         self.character = self.create_random_character(ai=False)
 
     @thread
@@ -26,7 +24,7 @@ class Local(EventDispatcher):
         while self.server.running:
             self.server.tick()
             know = self.server.update_character_knowledge(
-                self.character['info']['id']
+                self.character.id
             )
             self.on_character_knowledge_update(know)
 

@@ -5,9 +5,6 @@ import os
 from importlib import import_module
 import uuid
 
-from peewee import Using
-from playhouse.sqlite_ext import SqliteExtDatabase
-from playhouse.shortcuts import model_to_dict
 import yaml
 
 from util.threads import thread
@@ -17,15 +14,6 @@ from models.tile import Tile
 
 class Server:
     def __init__(self, settings={}):
-        try:
-            os.remove('saves/serversession.save')
-        except OSError:
-            pass
-        self.db = SqliteExtDatabase('saves/serversession.save')
-        self.db.connect()
-        with Using(self.db, [Character, Tile]):
-            self.db.create_tables([Character, Tile])
-
         running = False
 
         with open('maps/index', 'r') as f:
@@ -68,13 +56,7 @@ class Server:
     # - Data - #
     def create_character(self, name, age=0, x=0, y=0, ai=True):
         cid = uuid.uuid4()
-        character = {
-            'info': {
-                'id': cid, 'name': name, 'age': age, 'x': x, 'y': y, 'ai': ai,
-            },
-            'characters': {},
-            'tiles': {},
-        }
+        character = Character(cid, name, age, x, y, ai, {}, {})
         self.characters[cid] = character
         return character
 
@@ -83,14 +65,14 @@ class Server:
         character = self.characters[character_id]
         for i in range(-5, 6):
             for j in range(-5, 6):
-                i += character['info']['x']
-                j += character['info']['y']
+                i += character.x
+                j += character.y
 
                 fact = self.tiles.get((i, j))
                 if not fact:
                     fact = self._map.get(i, j)
                     self.tiles[(i, j)] = fact
 
-                self.characters[character_id]['tiles'][(i, j)] = fact
+                self.characters[character_id].tiles[(i, j)] = fact
                 know = fact
         return know
