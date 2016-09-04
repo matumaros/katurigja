@@ -11,4 +11,6 @@ class FlatGrassland(Procedually):
             y=0,
             altitude=0,
             ground_type='grass',
+            settlement_size=0,
+            resource=None,
         )
