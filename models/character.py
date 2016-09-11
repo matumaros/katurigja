@@ -1,9 +1,10 @@
 
 
-from collections import namedtuple
+# from collections import namedtuple
+from recordclass import recordclass
 
 
-Character = namedtuple(
+Character = recordclass(
     'Character',
-    ['id', 'name', 'age', 'x', 'y', 'ai', 'characters', 'tiles']
+    ['id', 'name', 'age', 'x', 'y', 'ai', 'characters', 'tiles', 'path']
 )

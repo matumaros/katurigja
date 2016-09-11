@@ -43,6 +43,10 @@ class Local(EventDispatcher):
     def update_settings(self, **settings):
         self.server.update_metadata(**settings)
 
+    def set_player_path(self, path):
+        self.character.path = path
+        self.server.set_character_path(self.character.id, path)
+
     # - Util - #
     def create_random_character(self, name='', age=0, ai=True):
         name = name or ''.join([

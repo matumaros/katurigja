@@ -67,10 +67,13 @@ class Server(EventDispatcher):
     def update_metadata(self, **settings):
         pass
 
+    def set_character_path(self, cid, path):
+        self.characters[cid].path = path
+
     # - Data - #
     def create_character(self, name, age=0, x=0, y=0, ai=True):
         cid = uuid.uuid4()
-        character = Character(cid, name, age, x, y, ai, {}, {})
+        character = Character(cid, name, age, x, y, ai, {}, {}, [])
         self.characters[cid] = character
         return character
 

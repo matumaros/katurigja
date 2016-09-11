@@ -1,6 +1,10 @@
 #:kivy 1.9.1
 
 <World>:
+    tiles: {}
+    zoom: 8
+
+    on_touch_down: self.move_to(args[1].pos)
     canvas:
         Color:
             rgb: 0, 103, 67
