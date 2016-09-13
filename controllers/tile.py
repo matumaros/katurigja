@@ -19,22 +19,22 @@ Builder.load_file('views/tile.kv')
 
 
 class Tile(GridLayout):
-    def __init__(self, model, zoom):
+    def __init__(self, model, pos, zoom):
         super().__init__()
-        self.update_layout(model)
-        #self.update_zoom(zoom)
-
-    def update_layout(self, model):
         self.model = model
+        self.update_layout()
+        self.update_pos(pos, zoom)
+
+    def update_layout(self):
         self.clear_widgets()
-        color = random.choice(GROUND_TYPES[model.ground_type])
+        color = random.choice(GROUND_TYPES[self.model.ground_type])
 
         for i in range(self.cols*self.rows):
             self.add_widget(TilePixel(color))
 
-    def update_zoom(self, zoom):
-        pos=(model.x*zoom, model.y*zoom),
-        size=(self.default_size*zoom, self.default_size*zoom)
+    def update_pos(self, pos, zoom):
+        self.pos = pos
+        self.size = (self.default_size*zoom, self.default_size*zoom)
 
 
 class TilePixel(Widget):

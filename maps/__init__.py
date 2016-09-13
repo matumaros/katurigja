@@ -1,7 +1,5 @@
 
 
-from peewee import Using
-
 from models.tile import Tile
 
 
@@ -14,10 +12,9 @@ class PreGenerated(PreMade):
     def __init__(self):
         super().__init__(self, map_path='maps/last_generated.map')
         tiles = self.build()
-        with Using(self._db, [Tile]):
-            for tile in tiles:
-                tile = Tile(**tile)
-                tile.save()
+        for tile in tiles:
+            tile = Tile(**tile)
+            tile.save()
 
     def get(self, x, y):
         with Using(self._db, [Tile]):
