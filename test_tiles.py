@@ -1,5 +1,11 @@
 
+from collections import namedtuple
 
+from kivy.app import App
+from kivy.uix.floatlayout import FloatLayout
+
+
+## - from controllers.tile import Tile - ##
 import random
 
 from kivy.graphics import Color
@@ -16,7 +22,24 @@ GROUND_TYPES = {
         (37/255, 137/255, 25/255),
     ]
 }
-Builder.load_file('views/tile.kv')
+Builder.load_string('''
+#:kivy 1.9.1
+
+<Tile>:
+    cols: 3
+    rows: 3
+    size_hint: (None, None)
+    default_size: 1
+
+<TilePixel>:
+    canvas:
+        Color:
+            rgb: self.color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+''')
 
 
 class Tile(GridLayout):
@@ -40,11 +63,32 @@ class Tile(GridLayout):
 
 
 class TilePixel(Widget):
-    color = ListProperty([1, 1, 1, 1])
-
     def __init__(self, color):
         super().__init__()
         self.set_color(color)
 
     def set_color(self, color):
         self.color = color
+        # self.canvas.add(self.color)
+## - import end - ##
+
+
+zoom = 32
+Model = namedtuple(
+    'Tile',
+    ['x', 'y', 'altitude', 'ground_type', 'settlement_size', 'resource']
+)
+
+class Test(App):
+    view = FloatLayout()
+    def build(self):
+        return self.view
+
+test = Test()
+for i in range(2):
+    for j in range(2):
+        x, y = i*zoom, j*zoom
+        model = Model(i, j, 0, 'grass', 0, None)
+        tile = Tile(model, (x, y), zoom)
+        test.view.add_widget(tile)
+test.run()
