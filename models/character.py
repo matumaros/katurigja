@@ -6,5 +6,6 @@ from recordclass import recordclass
 
 Character = recordclass(
     'Character',
-    ['id', 'name', 'age', 'x', 'y', 'ai', 'characters', 'tiles', 'path']
+    ['id', 'name', 'age', 'x', 'y', 'ai', 'speed',
+    'characters', 'tiles', 'path',]
 )

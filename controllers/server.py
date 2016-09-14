@@ -71,17 +71,20 @@ class Server(EventDispatcher):
         self.characters[cid].path = path
 
     # - Data - #
-    def create_character(self, name, age=0, x=0, y=0, ai=True):
+    def create_character(self, name, age=0, x=0, y=0, ai=True, speed=1):
         cid = uuid.uuid4()
-        character = Character(cid, name, age, x, y, ai, {}, {}, [])
+        character = Character(cid, name, age, x, y, ai, speed, {}, {}, [])
         self.characters[cid] = character
         return character
+
+    def update_character(self, character):
+        self.characters[character.id] = character
 
     def update_character_knowledge(self, character_id):
         know = {}
         character = self.characters[character_id]
-        for i in range(-5, 6):
-            for j in range(-5, 6):
+        for i in range(-1, 2):
+            for j in range(-1, 2):
                 i += character.x
                 j += character.y
 
