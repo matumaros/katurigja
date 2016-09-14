@@ -28,9 +28,9 @@ class Tile(GridLayout):
 
     def update_layout(self):
         self.clear_widgets()
-        color = random.choice(GROUND_TYPES[self.model.ground_type])
 
         for i in range(self.cols*self.rows):
+            color = random.choice(GROUND_TYPES[self.model.ground_type])
             pixel = TilePixel(color)
             self.add_widget(pixel)
 
