@@ -44,7 +44,4 @@ class TilePixel(Widget):
 
     def __init__(self, color):
         super().__init__()
-        self.set_color(color)
-
-    def set_color(self, color):
         self.color = color
