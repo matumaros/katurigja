@@ -1,8 +1,8 @@
 
 
 from kivy.uix.widget import Widget
-from kivy.lang import Builder
 
 
 class Band(Widget):
-    Builder.load_file('views/band.kv')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

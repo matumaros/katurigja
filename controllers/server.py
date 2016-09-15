@@ -88,6 +88,7 @@ class Server(EventDispatcher):
         distance = sqrt(a + b)
         factor = character.speed / distance
         dx, dy = goal[0] * factor, goal[1] * factor
+        character.last_pos = (x, y)
         character.x += dx
         character.y += dy
 
