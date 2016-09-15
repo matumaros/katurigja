@@ -1,6 +1,5 @@
 
 
-from math import sqrt
 import random
 import string
 
@@ -30,23 +29,14 @@ class Local(EventDispatcher):
         know = self.server.update_character_knowledge(
             self.character.id
         )
-        self.update_character_knowledge(know)
+        if know:
+            self.update_character_knowledge(know)
 
     def pause(self):
         self.server.pause()
 
     def update_character(self):
         if self.character.path:
-            goal = self.character.path[0]
-            x, y = self.character.x, self.character.y
-            a = abs(x - goal[0])**2
-            b = abs(y - goal[1])**2
-            distance = sqrt(a + b)
-            factor = self.character.speed / distance
-            dx, dy = goal[0] * factor, goal[1] * factor
-            self.character.x += dx
-            self.character.y += dy
-
             self.server.update_character(self.character)
         self.dispatch('on_character_update')
 

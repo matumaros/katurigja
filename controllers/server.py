@@ -1,8 +1,9 @@
 
 
-from time import time
-import os
 from importlib import import_module
+from math import sqrt
+import os
+from time import time
 import uuid
 
 from kivy.clock import Clock
@@ -73,20 +74,35 @@ class Server(EventDispatcher):
     # - Data - #
     def create_character(self, name, age=0, x=0, y=0, ai=True, speed=1):
         cid = uuid.uuid4()
-        character = Character(cid, name, age, x, y, ai, speed, {}, {}, [])
+        character = Character(
+            cid, name, age, x, y, ai, speed, (x, y), {}, {}, []
+        )
         self.characters[cid] = character
         return character
 
     def update_character(self, character):
-        self.characters[character.id] = character
+        goal = character.path[0]
+        x, y = character.x, character.y
+        a = abs(x - goal[0])**2
+        b = abs(y - goal[1])**2
+        distance = sqrt(a + b)
+        factor = character.speed / distance
+        dx, dy = goal[0] * factor, goal[1] * factor
+        character.x += dx
+        character.y += dy
 
     def update_character_knowledge(self, character_id):
         know = {}
         character = self.characters[character_id]
-        for i in range(-1, 2):
-            for j in range(-1, 2):
-                i += character.x
-                j += character.y
+        lx, ly = character.last_pos
+        if (round(character.x), round(character.y)) == (round(lx), round(ly)):
+            return know
+        distance = 1
+        for i in range(-distance, distance+1):
+            for j in range(-distance, distance+1):
+                i += round(character.x)
+                j += round(character.y)
+                assert all(map(lambda i: isinstance(i, int), (i, j)))
 
                 fact = self.tiles.get((i, j))
                 if not fact:
