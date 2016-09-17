@@ -18,18 +18,18 @@ class World(FloatLayout):
 
     def update_tiles(self, tiles):
         for tile_model in tiles.values():
-            x, y = self.real_to_wg(tile_model.x, tile_model.y)
-
-            tile = Tile(tile_model, (x, y), self.zoom)
             pos = (tile_model.x, tile_model.y)
+
             try:
                 old_tile = self.tiles[pos]
             except KeyError:
-                pass
+                x, y = self.real_to_wg(tile_model.x, tile_model.y)
+                tile = Tile(tile_model, (x, y), self.zoom)
+                self.tiles[pos] = tile
+                self.add_widget(tile)
             else:
-                self.remove_children([old_tile])
-            self.tiles[pos] = tile
-            self.add_widget(tile)
+                old_tile.model = tile_model
+                old_tile.update_layout()
 
     def real_to_wg(self, x, y):
         cx, cy = self.real_center[0], self.real_center[1]

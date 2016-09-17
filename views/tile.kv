@@ -2,6 +2,11 @@
 
 <Tile>:
     size_hint: (None, None)
-    cols: 3
-    rows: 3
+    texture: None
     default_size: 1
+
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            texture: self.texture
