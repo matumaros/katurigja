@@ -33,6 +33,8 @@ class Tile(Widget):
         ]
         arr = array('B', buf)
         self.texture.blit_buffer(arr, colorfmt='rgb', bufferfmt='ubyte')
+        self.texture.mag_filter = 'nearest'
+        self.texture.min_filter = 'nearest'
 
     def update_pos(self, pos, zoom):
         self.pos = pos
