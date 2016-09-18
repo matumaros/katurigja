@@ -32,6 +32,8 @@ Builder.load_string('''
     default_size: 1
 
     canvas:
+        Color:
+            rgba: 1, 1, 1, 1
         Rectangle:
             pos: self.pos
             size: self.size

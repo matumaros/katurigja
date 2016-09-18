@@ -1,5 +1,6 @@
 
 
+from kivy.clock import Clock
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
@@ -48,4 +49,4 @@ class Game(FloatLayout):
         self.world.real_center = pos
 
     def update_player_knowledge(self, ev, knowledge):
-        self.world.update_tiles(knowledge)
+        Clock.schedule_once(lambda dt: self.world.update_tiles(knowledge))
