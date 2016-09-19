@@ -11,26 +11,28 @@ from controllers.server import Server
 
 class Local(EventDispatcher):
     def __init__(self, settings={}):
-        self.register_event_type('on_character_update')
+        # self.register_event_type('on_character_update')
         self.register_event_type('on_character_knowledge_update')
+        self.register_event_type('on_tick')
         super().__init__()
 
         self.server = Server(settings)
         self.character = self.create_random_character(ai=False)
 
-        self.server.bind(on_tick=self.on_tick)
+        self.server.bind(on_tick=self.tick)
 
     @thread
     def run(self):
         self.server.run()
 
-    def on_tick(self, *args):
-        self.update_character()
+    def tick(self, *args):
+        # self.update_character()  # may be needed in the future
         know = self.server.update_character_knowledge(
             self.character.id
         )
         if know:
             self.update_character_knowledge(know)
+        self.dispatch('on_tick')
 
     def pause(self):
         self.server.pause()
@@ -50,13 +52,17 @@ class Local(EventDispatcher):
     def on_character_knowledge_update(self, know):
         return
 
+    def on_tick(self, *args):
+        return
+
     # - Metadata - #
     def update_settings(self, **settings):
         self.server.update_metadata(**settings)
 
-    def set_player_path(self, path):
-        self.character.path = path
-        self.server.set_character_path(self.character.id, path)
+    def set_band_path(self, path):
+        if self.character.id == self.character.band.leader.id:
+            self.character.band.path = path
+            self.server.set_band_path(self.character.band.id, path)
 
     # - Util - #
     def create_random_character(self, name='', age=0, ai=True):

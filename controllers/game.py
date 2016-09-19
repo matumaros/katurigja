@@ -16,8 +16,8 @@ class Game(FloatLayout):
         self.set_player(client.character)
 
         self.client.bind(
-            on_character_update=lambda wg, character=self.character:
-                self.update_world_center((character.x, character.y))
+            on_tick=lambda wg, band=self.character.band:
+                self.update_world_center(band.pos)
         )
         self.client.bind(
             on_character_knowledge_update=self.update_player_knowledge
@@ -26,7 +26,7 @@ class Game(FloatLayout):
             on_character=self.set_player
         )
         self.world.bind(
-            on_touch_down=lambda wg, ev: self.set_player_path(ev.pos)
+            on_touch_down=lambda wg, ev: self.on_action(ev.pos)
         )
 
         self.client.run()
@@ -34,13 +34,13 @@ class Game(FloatLayout):
     def set_player(self, player):
         self.character = player
 
-    def set_player_path(self, goal):
-        off_x = (goal[0] - self.world.center[0]) / self.world.zoom
-        off_y = (goal[1] - self.world.center[1]) / self.world.zoom
+    def on_action(self, pos):
+        off_x = (pos[0] - self.world.center[0]) / self.world.zoom
+        off_y = (pos[1] - self.world.center[1]) / self.world.zoom
         cx, cy = self.world.real_center[0], self.world.real_center[1]
         path = [(cx + off_x, cy + off_y)]
 
-        self.client.set_player_path(path)
+        self.client.set_band_path(path)
 
     def move_player_to(self, x, y):
         self.client.move_player_to(x, y)

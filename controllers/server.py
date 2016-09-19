@@ -11,6 +11,7 @@ from kivy.event import EventDispatcher
 import yaml
 
 from util.threads import thread
+from models.band import Band
 from models.character import Character
 from models.tile import Tile
 
@@ -31,6 +32,7 @@ class Server(EventDispatcher):
         self._map = getattr(module, gmap)()
 
         self.characters = {}
+        self.bands = {}
         self.tiles = {}
 
         self.update_metadata(**settings)
@@ -68,16 +70,26 @@ class Server(EventDispatcher):
     def update_metadata(self, **settings):
         pass
 
-    def set_character_path(self, cid, path):
-        self.characters[cid].path = path
+    def set_band_path(self, id, path):
+        self.bands[id].path = path
 
     # - Data - #
-    def create_character(self, name, age=0, x=0, y=0, ai=True, speed=1):
+    def create_character(
+            self, name, x=0, y=0, band=None, age=0, ai=True, speed=1):
         cid = uuid.uuid4()
+        bid = uuid.uuid4()
         character = Character(
-            cid, name, age, x, y, ai, speed, (x, y), {}, {}, []
+            cid, name, age, band, ai, speed, {}, {}
         )
         self.characters[cid] = character
+
+        if not band:
+            band = Band(
+                bid, name + "'s Band", character, (x, y), (x, y), speed,
+                {character.id: character}, {}
+            )
+            character.band = band
+            self.bands[bid] = band
         return character
 
     def update_character(self, character):
@@ -95,14 +107,15 @@ class Server(EventDispatcher):
     def update_character_knowledge(self, character_id):
         know = {}
         character = self.characters[character_id]
-        lx, ly = character.last_pos
-        if (round(character.x), round(character.y)) == (round(lx), round(ly)):
+        lx, ly = character.band.last_pos
+        x, y = character.band.pos
+        if (round(x), round(y)) == (round(lx), round(ly)):
             return know
         distance = 1
         for i in range(-distance, distance+1):
             for j in range(-distance, distance+1):
-                i += round(character.x)
-                j += round(character.y)
+                i += round(x)
+                j += round(y)
                 assert all(map(lambda i: isinstance(i, int), (i, j)))
 
                 fact = self.tiles.get((i, j))
