@@ -26,7 +26,6 @@ class Local(EventDispatcher):
         self.server.run()
 
     def tick(self, *args):
-        # self.update_character()  # may be needed in the future
         know = self.server.update_character_knowledge(
             self.character.id
         )
@@ -36,11 +35,6 @@ class Local(EventDispatcher):
 
     def pause(self):
         self.server.pause()
-
-    def update_character(self):
-        if self.character.path:
-            self.server.update_character(self.character)
-        self.dispatch('on_character_update')
 
     def update_character_knowledge(self, know):
         self.dispatch('on_character_knowledge_update', know)

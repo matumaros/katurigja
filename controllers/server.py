@@ -79,7 +79,7 @@ class Server(EventDispatcher):
         cid = uuid.uuid4()
         bid = uuid.uuid4()
         character = Character(
-            cid, name, age, band, ai, speed, {}, {}
+            cid, name, age, band, ai, speed, {}, {}, {}
         )
         self.characters[cid] = character
 
@@ -105,13 +105,23 @@ class Server(EventDispatcher):
         character.y += dy
 
     def update_character_knowledge(self, character_id):
-        know = {}
+        know = {
+            'tiles': {},
+            'bands': {},
+            'characters': {},
+        }
         character = self.characters[character_id]
         lx, ly = character.band.last_pos
         x, y = character.band.pos
         if (round(x), round(y)) == (round(lx), round(ly)):
             return know
         distance = 1
+
+        # Bands
+
+        # Characters
+
+        # Tiles
         for i in range(-distance, distance+1):
             for j in range(-distance, distance+1):
                 i += round(x)
@@ -125,5 +135,5 @@ class Server(EventDispatcher):
 
                 if (i, j) not in self.characters[character_id].tiles:
                     self.characters[character_id].tiles[(i, j)] = fact
-                    know[(i, j)] = fact
+                    know['tiles'][(i, j)] = fact
         return know

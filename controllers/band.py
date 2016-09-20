@@ -14,9 +14,9 @@ class Band(Widget):
         self.units = []
         self.attached_to = None
 
-        self.update()
+    def on_model(self, ev, model):
+        self.canvas.clear()
 
-    def update(self):
         with self.canvas:
             Color(rgb=(1, 0, 0))
             Rectangle(pos=self.pos, size=(3, 3))

@@ -5,6 +5,7 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty
 
 from controllers.tile import Tile
+from controllers.band import Band
 
 
 class World(FloatLayout):
@@ -15,6 +16,19 @@ class World(FloatLayout):
         for tile in self.tiles.values():
             x, y = tile.model.x, tile.model.y
             tile.x, tile.y = self.real_to_wg(x, y)
+
+    def update_bands(self, bands):
+        for band_model in bands.values():
+            pos = self.real_to_wg(*band_model.pos)
+            try:
+                band = self.bands[band_model.id]
+            except KeyError:
+                band = Band(band_model, pos=pos)
+            else:
+                band.pos = pos
+                band.model = model
+                self.bands[band_model.id] = band
+                self.add_widget(band)
 
     def update_tiles(self, tiles):
         for tile_model in tiles.values():
