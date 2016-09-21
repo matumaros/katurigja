@@ -19,8 +19,6 @@ class Local(EventDispatcher):
         self.server = Server(settings)
         self.character = self.create_random_character(ai=False)
 
-        self.server.bind(on_tick=self.tick)
-
     @thread
     def run(self):
         self.server.run()
@@ -65,4 +63,4 @@ class Local(EventDispatcher):
             for i in range(random.randint(2, 15))
         ]).title()
         age = age or random.randint(16, 60)
-        return self.server.create_character(name=name, age=age, ai=ai)
+        return self.server.create_character(name=name, age=age, player=self)
