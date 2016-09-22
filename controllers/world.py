@@ -5,7 +5,7 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty
 
 from controllers.tile import Tile
-from controllers.band import Band
+from views.band import Band
 
 
 class World(FloatLayout):

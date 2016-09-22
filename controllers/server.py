@@ -10,7 +10,8 @@ from kivy.clock import Clock
 import yaml
 
 from util.threads import thread
-from models.band import Band
+from controllers.band import Band
+from models.band import Band as BandModel
 from models.character import Character
 from models.tile import Tile
 
@@ -21,6 +22,7 @@ class Server:
 
         self.running = False
         self.tps = 1
+        self.local_client = None
         self.players = {}
 
         with open('maps/index', 'r') as f:
@@ -65,20 +67,27 @@ class Server:
     def tick(self):
         # dispatch game events
         for player in self.players:
-            self.update_band_position(leader_id=player)
+            char = self.characters[player]
+            band = self.bands[char.band.id]
+            band.update()
+            self.update_tiles(char_id=player)
+
+        if self.local_client:
+            self.local_client.tick()
 
     def pause(self):
         self.running = False
 
-    def update_band_position(self, leader_id):
-        tiles = {}
-        character = self.characters[leader_id]
+    def update_tiles(self, char_id):
+        character = self.characters[char_id]
+
         lx, ly = character.band.last_pos
         x, y = character.band.pos
         if (round(x), round(y)) == (round(lx), round(ly)):
             return
         distance = 1
 
+        tiles = {}
         for i in range(-distance, distance+1):
             for j in range(-distance, distance+1):
                 i += round(x)
@@ -95,17 +104,13 @@ class Server:
                     tiles[(i, j)] = fact
         self.dispatch(leader_id, {'tiles': tiles})
 
-    # - Default Events - #
-    def on_tick(self):
-        return
-
     # - Calls - #
     def update_metadata(self, **settings):
         pass
 
     def set_band_path(self, id, path):
         # Inform other players about change
-        self.bands[id].path = path
+        self.bands[id].set_path(path)
 
     def create_character(
             self, name, x=0, y=0, band=None, age=0, player=False, speed=1):
@@ -119,22 +124,10 @@ class Server:
         self.characters[cid] = character
 
         if not band:
-            band = Band(
+            band = BandModel(
                 bid, name + "'s Band", character, (x, y), (x, y), speed,
                 {character.id: character}, {}
             )
             character.band = band
-            self.bands[bid] = band
+            self.bands[bid] = Band(model=band)
         return character
-
-    def update_character(self, character):
-        goal = character.path[0]
-        x, y = character.x, character.y
-        a = abs(x - goal[0])**2
-        b = abs(y - goal[1])**2
-        distance = sqrt(a + b)
-        factor = character.speed / distance
-        dx, dy = goal[0] * factor, goal[1] * factor
-        character.last_pos = (x, y)
-        character.x += dx
-        character.y += dy

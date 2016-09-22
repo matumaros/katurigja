@@ -34,8 +34,9 @@ class Local(EventDispatcher):
     def pause(self):
         self.server.pause()
 
-    def update_character_knowledge(self, know):
-        self.dispatch('on_character_knowledge_update', know)
+    def update_character_knowledge(self, knowledge):
+        pass
+        # ToDo: update character knowledge and deligate related tasks
 
     # - Default Events - #
     def on_character_update(self):
