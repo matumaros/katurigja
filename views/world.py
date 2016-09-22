@@ -4,7 +4,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.properties import ListProperty
 
-from controllers.tile import Tile
+from views.tile import Tile
 from views.band import Band
 
 

@@ -1,7 +1,7 @@
 
 
 from main import Katurigja
-from controllers.game import Game
+from views.game import Game
 from controllers.client import Local
 
 

@@ -13,7 +13,7 @@ class Katurigja(App):
 
 
 if __name__ == '__main__':
-    from controllers.game import Game
+    from views.game import Game
 
     game = Katurigja()
     game.view.add_widget(Game())

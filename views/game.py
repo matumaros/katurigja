@@ -4,7 +4,7 @@ from kivy.clock import Clock
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
-from controllers.world import World
+from views.world import World
 
 
 class Game(FloatLayout):
