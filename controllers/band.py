@@ -1,5 +1,8 @@
 
 
+from math import sqrt
+
+
 class Band:
     def __init__(self, model):
         self.model = model

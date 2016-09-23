@@ -102,7 +102,7 @@ class Server:
                 if (i, j) not in character.tiles:
                     character.tiles[(i, j)] = fact
                     tiles[(i, j)] = fact
-        self.dispatch(leader_id, {'tiles': tiles})
+        self.dispatch(char_id, {'tiles': tiles})
 
     # - Calls - #
     def update_metadata(self, **settings):

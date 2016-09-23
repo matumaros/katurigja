@@ -20,7 +20,7 @@ class Game(FloatLayout):
                 self.update_world_center(band.pos)
         )
         self.client.bind(
-            on_character_knowledge_update=self.update_player_knowledge
+            on_character_knowledge_update=self.update_character_knowledge
         )
         self.client.bind(
             on_character=self.set_player
@@ -48,7 +48,7 @@ class Game(FloatLayout):
     def update_world_center(self, pos):
         self.world.real_center = pos
 
-    def update_player_knowledge(self, ev, knowledge):
+    def update_character_knowledge(self, ev, knowledge):
         Clock.schedule_once(
             lambda dt: self.world.update_tiles(knowledge['tiles'])
         )

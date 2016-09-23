@@ -24,25 +24,20 @@ class Local(EventDispatcher):
         self.server.run()
 
     def tick(self, *args):
-        know = self.server.update_character_knowledge(
-            self.character.id
-        )
-        if know:
-            self.update_character_knowledge(know)
+        # ToDo: update band pos
         self.dispatch('on_tick')
 
     def pause(self):
         self.server.pause()
 
     def update_character_knowledge(self, knowledge):
-        pass
-        # ToDo: update character knowledge and deligate related tasks
+        self.dispatch('on_character_knowledge_update', knowledge)
 
     # - Default Events - #
     def on_character_update(self):
         return
 
-    def on_character_knowledge_update(self, know):
+    def on_character_knowledge_update(self, knowledge):
         return
 
     def on_tick(self, *args):
