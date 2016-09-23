@@ -1,6 +1,6 @@
 
 
-from math import sqrt
+from math import hypot
 
 
 class Band:
@@ -21,10 +21,14 @@ class Band:
         leader = self.model.leader
         goal = self.model.path[0]
         x, y = self.model.pos
-        a = abs(x - goal[0])**2
-        b = abs(y - goal[1])**2
-        distance = sqrt(a + b)
-        factor = leader.speed / distance
-        dx, dy = goal[0] * factor, goal[1] * factor
+        distance_x = x - goal[0]
+        distance_y = y - goal[1]
+        total_distance = hypot(distance_x, distance_y)
+        tick_distance = leader.speed
+        if total_distance < tick_distance:
+            tick_distance = total_distance
+            self.model.path.pop(0)
+        factor = tick_distance / total_distance
+        dx, dy = distance_x * factor, distance_y * factor
         self.model.last_pos = (x, y)
         self.model.pos = x + dx, y + dy
