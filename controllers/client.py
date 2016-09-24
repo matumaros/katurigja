@@ -7,24 +7,32 @@ from kivy.event import EventDispatcher
 
 from util.threads import thread
 from controllers.server import Server
+from controllers.band import Band
 
 
 class Local(EventDispatcher):
     def __init__(self, settings={}):
-        # self.register_event_type('on_character_update')
+        self.register_event_type('on_band_update')
         self.register_event_type('on_character_knowledge_update')
         self.register_event_type('on_tick')
         super().__init__()
 
         self.server = Server(settings)
+        self.server.local_client = self
+        self.bands = {}
         self.character = self.create_random_character(ai=False)
+        self.bands[self.character.band.id] = Band(model=self.character.band)
 
     @thread
     def run(self):
         self.server.run()
 
     def tick(self, *args):
-        # ToDo: update band pos
+        for band_id, band in self.bands.items():
+            model = band.model
+            if model.path:
+                band.update()
+                self.dispatch('on_band_update', band.model)
         self.dispatch('on_tick')
 
     def pause(self):
@@ -34,7 +42,7 @@ class Local(EventDispatcher):
         self.dispatch('on_character_knowledge_update', knowledge)
 
     # - Default Events - #
-    def on_character_update(self):
+    def on_band_update(self, band_model):
         return
 
     def on_character_knowledge_update(self, knowledge):

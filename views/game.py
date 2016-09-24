@@ -20,6 +20,9 @@ class Game(FloatLayout):
                 self.update_world_center(band.pos)
         )
         self.client.bind(
+            on_band_update=lambda ev, band: self.world.update_band(band)
+        )
+        self.client.bind(
             on_character_knowledge_update=self.update_character_knowledge
         )
         self.client.bind(

@@ -13,22 +13,21 @@ class World(FloatLayout):
     real_center = ListProperty([0, 0])
 
     def on_real_center(self, wg, pos):
-        for tile in self.tiles.values():
+        for tile in list(self.tiles.values()):
             x, y = tile.model.x, tile.model.y
             tile.x, tile.y = self.real_to_wg(x, y)
 
-    def update_bands(self, bands):
-        for band_model in bands.values():
-            pos = self.real_to_wg(*band_model.pos)
-            try:
-                band = self.bands[band_model.id]
-            except KeyError:
-                band = Band(band_model, pos=pos)
-            else:
-                band.pos = pos
-                band.model = model
-                self.bands[band_model.id] = band
-                self.add_widget(band)
+    def update_band(self, band_model):
+        pos = self.real_to_wg(*band_model.pos)
+        try:
+            band = self.bands[band_model.id]
+        except KeyError:
+            band = Band(band_model, pos=pos)
+            self.bands[band_model.id] = band
+            self.add_widget(band)
+        else:
+            band.pos = pos
+            band.model = band_model
 
     def update_tiles(self, tiles):
         for tile_model in tiles.values():

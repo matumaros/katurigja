@@ -1,13 +1,15 @@
 
 
-from kivy.uix.widget import Widget
-from kivy.lang import Builder
 from kivy.graphics import Color, Rectangle
+from kivy.lang import Builder
+from kivy.properties import ObjectProperty
+from kivy.uix.widget import Widget
 
 Builder.load_file('views/band.kv')
 
 
 class Band(Widget):
+    model = ObjectProperty(None)
     def __init__(self, model, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model = model
