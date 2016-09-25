@@ -21,7 +21,7 @@ class Server:
         super().__init__()
 
         self.running = False
-        self.tps = 1
+        self.TPS = 10
         self.local_client = None
         self.players = {}
 
@@ -52,9 +52,9 @@ class Server:
         self._run()
 
     def _run(self):
-        self.tick()
         if self.running:
-            Clock.schedule_once(lambda dt: self._run(), 1/self.tps)
+            Clock.schedule_once(lambda dt: self._run(), 1/self.TPS)
+            self.tick()
 
     def dispatch(self, player_id, knowledge):
         player = self.players[player_id]
@@ -113,7 +113,8 @@ class Server:
         self.bands[id].set_path(path)
 
     def create_character(
-            self, name, x=0, y=0, band=None, age=0, player=False, speed=1):
+            self, name,
+            x=0, y=0, band=None, age=0, player=False, speed=0.003):
         cid = uuid.uuid4()
         if player:
             self.players[cid] = player
