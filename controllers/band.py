@@ -31,4 +31,4 @@ class Band:
         factor = tick_distance / total_distance
         dx, dy = distance_x * factor, distance_y * factor
         self.model.last_pos = (x, y)
-        self.model.pos = x + dx, y + dy
+        self.model.pos = x - dx, y - dy
