@@ -49,6 +49,7 @@ class Server:
     # - Game Logic - #
     def run(self):
         self.running = True
+        self.tick(first=True)
         self._run()
 
     def _run(self):
@@ -64,13 +65,16 @@ class Server:
             pass # Try connecting to networ client
 
     @thread
-    def tick(self):
+    def tick(self, first=False):
         # dispatch game events
-        for player in self.players:
-            char = self.characters[player]
+        for id in self.players:
+            char = self.characters[id]
             band = self.bands[char.band.id]
             band.update()
-            self.update_tiles(char_id=player)
+            lx, ly = char.band.last_pos
+            x, y = char.band.pos
+            if first or (round(x), round(y)) != (round(lx), round(ly)):
+                self.update_tiles(character=char)
 
         if self.local_client:
             self.local_client.tick()
@@ -78,20 +82,16 @@ class Server:
     def pause(self):
         self.running = False
 
-    def update_tiles(self, char_id):
-        character = self.characters[char_id]
-
-        lx, ly = character.band.last_pos
+    def update_tiles(self, character):
         x, y = character.band.pos
-        if (round(x), round(y)) == (round(lx), round(ly)):
-            return
+        x, y = round(x), round(y)
         distance = 1
 
         tiles = {}
         for i in range(-distance, distance+1):
             for j in range(-distance, distance+1):
-                i += round(x)
-                j += round(y)
+                i += x
+                j += y
                 assert all(map(lambda i: isinstance(i, int), (i, j)))
 
                 fact = self.tiles.get((i, j))
@@ -102,7 +102,7 @@ class Server:
                 if (i, j) not in character.tiles:
                     character.tiles[(i, j)] = fact
                     tiles[(i, j)] = fact
-        self.dispatch(char_id, {'tiles': tiles})
+        self.dispatch(character.id, {'tiles': tiles})
 
     # - Calls - #
     def update_metadata(self, **settings):
