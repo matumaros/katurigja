@@ -63,6 +63,7 @@ class Server:
             player.update_character_knowledge(knowledge)
         except AttributeError:
             pass # Try connecting to networ client
+        print('dispatched')
 
     @thread
     def tick(self, first=False):
@@ -77,7 +78,7 @@ class Server:
                 self.update_tiles(character=char)
 
         if self.local_client:
-            self.local_client.tick()
+            self.local_client.tick(first=first)
 
     def pause(self):
         self.running = False

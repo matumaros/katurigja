@@ -18,6 +18,7 @@ class World(FloatLayout):
             tile.x, tile.y = self.real_to_wg(x, y)
 
     def update_band(self, band_model):
+        print('update band')
         pos = self.real_to_wg(*band_model.pos)
         try:
             band = self.bands[band_model.id]

@@ -27,10 +27,10 @@ class Local(EventDispatcher):
     def run(self):
         self.server.run()
 
-    def tick(self, *args):
+    def tick(self, first=False):
         for band_id, band in self.bands.items():
             model = band.model
-            if model.path:
+            if first or model.path:
                 band.update()
                 self.dispatch('on_band_update', band.model)
         self.dispatch('on_tick')
