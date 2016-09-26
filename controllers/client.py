@@ -5,7 +5,6 @@ import string
 
 from kivy.event import EventDispatcher
 
-from util.threads import thread
 from controllers.server import Server
 from controllers.band import Band
 
@@ -23,7 +22,6 @@ class Local(EventDispatcher):
         self.character = self.create_random_character(ai=False)
         self.bands[self.character.band.id] = Band(model=self.character.band)
 
-    @thread
     def run(self):
         self.server.run()
 

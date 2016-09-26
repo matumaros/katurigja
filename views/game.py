@@ -52,7 +52,4 @@ class Game(FloatLayout):
         self.world.real_center = pos
 
     def update_character_knowledge(self, ev, knowledge):
-        # Clock.schedule_once(
-        #     lambda dt:
-        # )
         self.world.update_tiles(knowledge['tiles'])

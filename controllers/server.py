@@ -65,7 +65,6 @@ class Server:
             pass # Try connecting to networ client
         print('dispatched')
 
-    @thread
     def tick(self, first=False):
         # dispatch game events
         for id in self.players:
