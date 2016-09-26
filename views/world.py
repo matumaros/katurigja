@@ -28,6 +28,8 @@ class World(FloatLayout):
         else:
             band.pos = pos
             band.model = band_model
+            self.remove_widget(band)
+            self.add_widget(band)
 
     def update_tiles(self, tiles):
         for tile_model in tiles.values():
