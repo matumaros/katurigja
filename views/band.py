@@ -17,6 +17,9 @@ class Band(Widget):
         self.attached_to = None
 
     def on_model(self, ev, model):
+        self.change_model(model)
+
+    def change_model(self, model):
         self.canvas.clear()
 
         with self.canvas:

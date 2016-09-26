@@ -27,7 +27,7 @@ class World(FloatLayout):
             self.add_widget(band)
         else:
             band.pos = pos
-            band.model = band_model
+            band.change_model(band_model)
             self.remove_widget(band)
             self.add_widget(band)
 

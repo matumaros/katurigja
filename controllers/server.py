@@ -63,7 +63,6 @@ class Server:
             player.update_character_knowledge(knowledge)
         except AttributeError:
             pass # Try connecting to networ client
-        print('dispatched')
 
     def tick(self, first=False):
         # dispatch game events
