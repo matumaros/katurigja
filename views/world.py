@@ -12,6 +12,10 @@ class World(FloatLayout):
     Builder.load_file('views/world.kv')
     real_center = ListProperty([0, 0])
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.bind(size=self.on_real_center)
+
     def on_real_center(self, wg, pos):
         for tile in list(self.tiles.values()):
             x, y = tile.model.x, tile.model.y
