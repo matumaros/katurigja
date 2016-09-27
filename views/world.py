@@ -15,7 +15,7 @@ class World(FloatLayout):
     def on_real_center(self, wg, pos):
         for tile in list(self.tiles.values()):
             x, y = tile.model.x, tile.model.y
-            tile.x, tile.y = self.real_to_wg(x, y)
+            tile.update_pos(self.real_to_wg(x, y), self.zoom)
 
     def update_band(self, band_model):
         pos = self.real_to_wg(*band_model.pos)

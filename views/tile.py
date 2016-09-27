@@ -37,5 +37,5 @@ class Tile(Widget):
         self.texture.min_filter = 'nearest'
 
     def update_pos(self, pos, zoom):
-        self.pos = pos
+        self.center = pos
         self.size = (self.default_size*zoom, self.default_size*zoom)
