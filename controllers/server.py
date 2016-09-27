@@ -72,7 +72,7 @@ class Server:
             band.update()
             lx, ly = char.band.last_pos
             x, y = char.band.pos
-            if first or (round(x), round(y)) != (round(lx), round(ly)):
+            if first or (int(x), int(y)) != (int(lx), int(ly)):
                 self.update_tiles(character=char)
 
         if self.local_client:
@@ -83,7 +83,7 @@ class Server:
 
     def update_tiles(self, character):
         x, y = character.band.pos
-        x, y = round(x), round(y)
+        x, y = int(x), int(y)
         distance = 1
 
         tiles = {}

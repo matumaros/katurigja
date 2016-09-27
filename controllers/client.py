@@ -29,8 +29,7 @@ class Local(EventDispatcher):
         for band_id, band in self.bands.items():
             model = band.model
             if first or model.path:
-                band.update()
-                self.dispatch('on_band_update', band.model)
+                self.dispatch('on_band_update', model)
         self.dispatch('on_tick')
 
     def pause(self):
