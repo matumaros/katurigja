@@ -88,8 +88,8 @@ class Server:
 
         tiles = {}
         for i in range(-distance, distance+1):
+            i += x
             for j in range(-distance, distance+1):
-                i += x
                 j += y
                 assert all(map(lambda i: isinstance(i, int), (i, j)))
 
