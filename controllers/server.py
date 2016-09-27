@@ -113,7 +113,7 @@ class Server:
 
     def create_character(
             self, name,
-            x=0, y=0, band=None, age=0, player=False, speed=0.003):
+            x=0, y=0, band=None, age=0, player=False, speed=0.015):
         cid = uuid.uuid4()
         if player:
             self.players[cid] = player

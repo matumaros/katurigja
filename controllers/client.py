@@ -65,4 +65,6 @@ class Local(EventDispatcher):
             for i in range(random.randint(2, 15))
         ]).title()
         age = age or random.randint(16, 60)
-        return self.server.create_character(name=name, age=age, player=self)
+        return self.server.create_character(
+            name=name, age=age, player=self, speed=0.1  # TESTING
+        )
