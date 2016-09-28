@@ -10,9 +10,9 @@ from kivy.uix.widget import Widget
 
 GROUND_TYPES = {
     'grass': [
-        (14, 167, 67),
-        (10, 104, 0),
-        (37, 137, 25),
+        (26, 120, 26),
+        (19, 118, 19),
+        (18, 129, 30),
     ]
 }
 Builder.load_file('views/tile.kv')
