@@ -20,6 +20,8 @@ class World(FloatLayout):
         for tile in list(self.tiles.values()):
             x, y = tile.model.x, tile.model.y
             tile.update_pos(self.real_to_wg(x, y), self.zoom)
+        for band in self.bands.values():
+            self.update_band(band.model)
 
     def update_band(self, band_model):
         pos = self.real_to_wg(*band_model.pos)
