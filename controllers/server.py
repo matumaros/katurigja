@@ -84,7 +84,7 @@ class Server:
     def update_tiles(self, character):
         x, y = character.band.pos
         x, y = int(x), int(y)
-        distance = 1
+        distance = 10
 
         tiles = {}
         for i in range(-distance, distance+1):
