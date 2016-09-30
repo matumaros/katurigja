@@ -2,11 +2,11 @@
 
 
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, FadeTransition
 
 
 class Katurigja(App):
-    view = BoxLayout()
+    view = ScreenManager(transition=FadeTransition())
 
     def build(self):
         return self.view
@@ -14,7 +14,14 @@ class Katurigja(App):
 
 if __name__ == '__main__':
     from views.menu import Menu
+    from views.game_setup import GameSetup
 
     game = Katurigja()
-    game.view.add_widget(Menu())
+    game.view.add_widget(Menu(name='main_menu'))
+    game.view.add_widget(
+        GameSetup(
+            last_screen='main_menu',
+            name='game_setup',
+        )
+    )
     game.run()
