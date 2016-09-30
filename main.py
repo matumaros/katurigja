@@ -13,8 +13,8 @@ class Katurigja(App):
 
 
 if __name__ == '__main__':
-    from views.game import Game
+    from views.menu import Menu
 
     game = Katurigja()
-    game.view.add_widget(Game())
+    game.view.add_widget(Menu())
     game.run()
