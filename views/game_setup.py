@@ -14,3 +14,6 @@ class GameSetup(Screen):
 
     def go_back(self):
         self.parent.current = self.last_screen
+
+    def start_game(self):
+        self.parent.current = 'game'

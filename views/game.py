@@ -1,13 +1,13 @@
 
 
 from kivy.clock import Clock
-from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 
 from views.world import World
 
 
-class Game(FloatLayout):
+class Game(Screen):
     Builder.load_file('views/game.kv')
 
     def __init__(self, client, *args, **kwargs):
@@ -32,6 +32,7 @@ class Game(FloatLayout):
             on_touch_down=lambda wg, ev: self.on_action(ev.pos)
         )
 
+    def on_enter(self):
         self.client.run()
 
     def set_player(self, player):
