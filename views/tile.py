@@ -12,9 +12,16 @@ GROUND_TYPES = {
     'grass': [
         (26, 120, 26),
         (19, 118, 19),
-        (18, 129, 30),
-    ]
+        (18, 125, 30),
+    ],
 }
+BUILDING_TYPES = {   
+    'roof': [
+        (59, 46, 49),
+        (62, 42, 45),
+    ],
+}
+
 Builder.load_file('views/tile.kv')
 
 
@@ -27,10 +34,21 @@ class Tile(Widget):
 
     def update_layout(self):
         self.texture = Texture.create(size=(self.cols, self.rows))
-        buf = [
-            c for i in range(self.cols * self.rows)
-            for c in random.choice(GROUND_TYPES[self.model.ground_type])
-        ]
+        ground_pixels = (
+            self.cols * self.rows) - self.model.settlement_size
+
+        buf = []
+        # ground part
+        for i in range(ground_pixels):
+            buf.append(
+                random.choice(GROUND_TYPES[self.model.ground_type])
+            )
+        # population part
+        for i in range(self.model.settlement_size):
+            buf.append(random.choice(BUILDING_TYPES['roof']))
+
+        random.shuffle(buf)
+        buf = [p for c in buf for p in c]
         arr = array('B', buf)
         self.texture.blit_buffer(arr, colorfmt='rgb', bufferfmt='ubyte')
         self.texture.mag_filter = 'nearest'

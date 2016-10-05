@@ -1,5 +1,7 @@
 
 
+import random
+
 from . import Procedually
 from models.tile import Tile
 
@@ -11,6 +13,6 @@ class FlatGrassland(Procedually):
             y=y,
             altitude=0,
             ground_type='grass',
-            settlement_size=0,
+            settlement_size=max(random.randint(-10, 10), 0),
             resource=None,
         )
