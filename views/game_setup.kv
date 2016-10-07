@@ -6,15 +6,23 @@
     map_selection: map_selection
 
     BoxLayout:
-        size_hint: (.3, .5)
-        center: root.center
-        Button:
-            text: "Back"
-            on_press: root.go_back()
-        Button:
-            text: "Start"
-            on_press: root.start_game()
-        Spinner:
-            id: map_selection
-            text: "Select Map"
-            on_text: root.on_settings_change('map_name', self.text)
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                id: player_list
+            BoxLayout:
+                id: footer
+                Button:
+                    text: "Back"
+                    on_press: root.go_back()
+                Button:
+                    text: "Start"
+                    on_press: root.start_game()
+        BoxLayout:
+            id: settings_panel
+            Spinner:
+                id: map_selection
+                height: 30
+                size_hint_y: None
+                text: "Select Map"
+                on_text: root.on_settings_change('map_name', self.text)
