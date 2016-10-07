@@ -17,6 +17,7 @@ class GameSetup(Screen):
         with open('maps/index', 'r') as f:
             self.maps = yaml.load(f.read())
         self.map_selection.values = self.maps.keys()
+        self.map_selection.text = 'flat_grassland'
 
     def on_settings_change(self, key, value):
         self.settings[key] = value

@@ -29,7 +29,7 @@ class Game(Screen):
             on_character=self.set_player
         )
         self.world.bind(
-            on_touch_down=lambda wg, ev: self.on_action(ev.pos)
+            on_touch_down=lambda wg, ev: self.on_action(ev)
         )
 
     def on_enter(self):
@@ -38,7 +38,10 @@ class Game(Screen):
     def set_player(self, player):
         self.character = player
 
-    def on_action(self, pos):
+    def on_action(self, ev):
+        if ev.is_mouse_scrolling:
+            return
+        pos = ev.pos
         off_x = (pos[0] - self.world.center[0]) / self.world.zoom
         off_y = (pos[1] - self.world.center[1]) / self.world.zoom
         cx, cy = self.world.real_center[0], self.world.real_center[1]
