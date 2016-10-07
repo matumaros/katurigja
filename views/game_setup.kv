@@ -1,6 +1,10 @@
 #:kivy 1.9.1
 
+
+
 <GameSetup>:
+    map_selection: map_selection
+
     BoxLayout:
         size_hint: (.3, .5)
         center: root.center
@@ -10,3 +14,7 @@
         Button:
             text: "Start"
             on_press: root.start_game()
+        Spinner:
+            id: map_selection
+            text: "Select Map"
+            on_text: root.on_settings_change('map_name', self.text)

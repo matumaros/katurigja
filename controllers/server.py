@@ -26,11 +26,8 @@ class Server:
         self.players = {}
 
         with open('maps/index', 'r') as f:
-            maps = yaml.load(f.read())
-        map_name = settings['map_name']
-        module = import_module('maps.' + map_name)
-        gmap = maps[map_name]
-        self._map = getattr(module, gmap)()
+            self.maps = yaml.load(f.read())
+        self._map = None
 
         self.characters = {}
         self.bands = {}
@@ -48,6 +45,7 @@ class Server:
 
     # - Game Logic - #
     def run(self):
+        assert self._map
         self.running = True
         self.tick(first=True)
         self._run()
@@ -105,7 +103,14 @@ class Server:
 
     # - Calls - #
     def update_metadata(self, **settings):
-        pass
+        try:
+            map_name = settings['map_name']
+        except KeyError:
+            pass
+        else:
+            module = import_module('maps.' + map_name)
+            gmap = self.maps[map_name]
+            self._map = getattr(module, gmap)()
 
     def set_band_path(self, id, path):
         # Inform other players about change

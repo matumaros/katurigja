@@ -19,6 +19,8 @@ if __name__ == '__main__':
     from views.game import Game
 
     game = Katurigja()
+    client = Local()
+
     game.view.add_widget(
         Menu(
             name='main_menu',
@@ -27,12 +29,13 @@ if __name__ == '__main__':
     game.view.add_widget(
         GameSetup(
             last_screen='main_menu',
+            client=client,
             name='game_setup',
         )
     )
     game.view.add_widget(
         Game(
-            client=Local({'map_name': 'flat_grassland'}),
+            client=client,
             name='game',
         )
     )
