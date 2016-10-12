@@ -24,4 +24,4 @@ class Band(Widget):
 
         with self.canvas:
             Color(rgb=(1, 0, 0))
-            Rectangle(pos=self.pos, size=(3, 3))
+            Rectangle(pos=self.pos, size=(8, 8))

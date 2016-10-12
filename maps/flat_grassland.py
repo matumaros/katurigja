@@ -13,6 +13,6 @@ class FlatGrassland(Procedually):
             y=y,
             altitude=0,
             ground_type='grass',
-            settlement_size=max(random.randint(-10, 10), 0),
+            settlement=None,
             resource=None,
         )

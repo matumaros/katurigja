@@ -13,7 +13,6 @@ from util.threads import thread
 from controllers.band import Band
 from models.band import Band as BandModel
 from models.character import Character
-from models.tile import Tile
 
 
 class Server:
