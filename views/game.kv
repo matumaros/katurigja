@@ -1,5 +1,7 @@
 #:kivy 1.9.1
 
+#:import MenuSpawner uix.modern_menu.MenuSpawner
+
 <Game>:
     world: world
     menu: menu
@@ -14,3 +16,15 @@
             text: "Menu"
             size: 4*dp(15), 4*dp(15)
             size_hint: (None, None)
+    MenuSpawner:
+        timeout: .4
+        menu_args:
+            dict(
+            cancel_color=(.6, .5, .3, .7),
+            color=(.6, .5, .3, 1),
+            creation_direction=-1,
+            radius=20,
+            creation_timeout=.0,
+            choices=[
+            dict(text='test item', index=1, callback=root.test_action_menu_item),
+            ])

@@ -49,6 +49,10 @@ class Game(Screen):
 
         self.client.set_band_path(path)
 
+    def test_action_menu_item(self, *args):
+        print("Test Item")
+        args[0].parent.dismiss()
+
     def move_player_to(self, x, y):
         self.client.move_player_to(x, y)
 

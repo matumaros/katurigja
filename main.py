@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
-
 from kivy.app import App
+from kivy.config import Config
 from kivy.uix.screenmanager import ScreenManager, FadeTransition
+
+
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
 
 class Katurigja(App):
