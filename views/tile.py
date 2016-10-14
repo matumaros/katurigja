@@ -2,21 +2,23 @@
 
 import random
 
+from kivy.graphics import Color, Rectangle
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
 
 GROUND_TYPES = {
     'grass': [
-        (26, 120, 26),
-        (19, 118, 19),
-        (18, 125, 30),
+        (26 / 255, 120 / 255, 26 / 255, 1),
+        (19 / 255, 118 / 255, 19 / 255, 1),
+        (18 / 255, 125 / 255, 30 / 255, 1),
     ],
 }
 BUILDING_TYPES = {
     'roof': [
-        (59, 46, 49),
-        (62, 42, 45),
+        (59 / 255, 46 / 255, 49 / 255, 1),
+        (62 / 255, 42 / 255, 45 / 255, 1),
     ],
 }
 
